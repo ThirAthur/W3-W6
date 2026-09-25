@@ -16,4 +16,31 @@ class ActivityController extends Controller
     {
         return view('activities.show', compact('activity'));
     }
+    public function create(): View
+    {
+    return view('activities.create');
+    }
+    public function store(StoreActivityRequest $request): RedirectResponse
+    {
+        $activity = Activity::create($request->validated());
+        
+        return to_route('activities.show', $activity)->with('success', 'Data kegiatan berhasil ditambahkan.');
+    }
+    public function edit(Activity $activity): View
+    {
+        return view('activities.edit', compact('activity'));
+    }
+    public function update(
+    UpdateActivityRequest $request,
+    Activity $activity
+    ): RedirectResponse {
+        $activity->update($request->validated());
+        
+        return to_route('activities.show', $activity)->with('success', 'Data kegiatan berhasil diperbarui.');
+    }
+    public function destroy(Activity $activity): RedirectResponse
+    {
+        $activity->delete();
+        return to_route('activities.index')->with('success', 'Data kegiatan berhasil dihapus.');
+    }
 }
